@@ -30,22 +30,26 @@ LABEL description="Ubuntu 24.04 Source Engine image"
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Add i386 architecture and install minimal required packages
+# Add i386 architecture and install packages in stages
 RUN dpkg --add-architecture i386 \
     && apt update \
-    && apt upgrade -y \
-    && apt install -y --no-install-recommends \
+    && apt upgrade -y
+
+# Install basic tools first
+RUN apt install -y --no-install-recommends \
         tar curl gcc g++ \
-        lib32gcc-s1 libgcc1 \
-        libcurl4-gnutls-dev:i386 libssl3:i386 \
-        libcurl4:i386 lib32tinfo6 libtinfo6:i386 \
+        iproute2 gdb telnet net-tools \
+        netcat-openbsd tzdata
+
+# Install 32-bit libraries
+RUN apt install -y --no-install-recommends \
+        lib32gcc-s1 \
+        libcurl4:i386 \
         lib32z1 lib32stdc++6 \
-        libncurses5:i386 libcurl3-gnutls:i386 \
-        libsdl2-2.0-0:i386 \
-        iproute2 gdb libsdl1.2debian \
-        libfontconfig1 telnet net-tools \
-        netcat-traditional tzdata \
-    && useradd -m -d /home/container container \
+        libsdl2-2.0-0:i386
+
+# Create user and cleanup
+RUN useradd -m -d /home/container container \
     && apt clean \
     && rm -rf /var/lib/apt/lists/*
 
