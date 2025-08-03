@@ -33,9 +33,10 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Add i386 architecture and install minimal required packages
 RUN dpkg --add-architecture i386 \
     && apt update \
+    && apt upgrade -y \
     && apt install -y --no-install-recommends \
         tar curl gcc g++ \
-        lib32gcc-s1 libgcc-s1:i386 \
+        lib32gcc-s1 libgcc1 \
         libcurl4-gnutls-dev:i386 libssl3:i386 \
         libcurl4:i386 lib32tinfo6 libtinfo6:i386 \
         lib32z1 lib32stdc++6 \
@@ -44,21 +45,13 @@ RUN dpkg --add-architecture i386 \
         iproute2 gdb libsdl1.2debian \
         libfontconfig1 telnet net-tools \
         netcat-traditional tzdata \
+    && useradd -m -d /home/container container \
     && apt clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Create container user
-RUN useradd -m -d /home/container container
-
-# Switch to container user
 USER container
 ENV USER=container HOME=/home/container
-
-# Set working directory
 WORKDIR /home/container
 
-# Copy entrypoint script
 COPY ./entrypoint.sh /entrypoint.sh
-
-# Default command
 CMD [ "/bin/bash", "/entrypoint.sh" ]
