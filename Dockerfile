@@ -42,7 +42,7 @@ RUN apt install -y \
         netcat-openbsd tzdata
 
 # Install 32-bit libraries
-RUN apt install -y --no-install-recommends \
+RUN apt install -y \
         lib32gcc-s1 \
         libcurl4:i386 \
         lib32z1 lib32stdc++6 \
