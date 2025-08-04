@@ -48,7 +48,12 @@ RUN apt install -y --no-install-recommends \
         lib32z1 lib32stdc++6 \
         libsdl2-2.0-0:i386 \
         lib32tinfo6 libtinfo6:i386 \
-        lib32ncurses6 libncurses6:i386
+        lib32ncurses6 libncurses6:i386 \
+        libc6:i386 \
+        libssl3:i386 \
+        libcrypto3:i386 \
+        libstdc++6:i386 \
+        zlib1g:i386
 
 # Create compatibility symlinks for older library versions
 RUN ln -sf /lib32/libtinfo.so.6 /lib32/libtinfo.so.5 || true \
