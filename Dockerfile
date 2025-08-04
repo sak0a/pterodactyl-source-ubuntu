@@ -36,13 +36,13 @@ RUN dpkg --add-architecture i386 \
     && apt upgrade -y
 
 # Install basic tools first
-RUN apt install -y --no-install-recommends \
+RUN apt install -y \
         tar curl gcc g++ \
         iproute2 gdb telnet net-tools \
         netcat-openbsd tzdata
 
 # Install 32-bit libraries
-RUN apt install -y --no-install-recommends \
+RUN apt install -y \
         lib32gcc-s1 \
         libcurl4:i386 \
         lib32z1 lib32stdc++6 \
@@ -50,8 +50,9 @@ RUN apt install -y --no-install-recommends \
 
 # Create user and cleanup
 RUN useradd -m -d /home/container container \
-    && apt clean \
-    && rm -rf /var/lib/apt/lists/*
+    && apt clean  \
+    #\
+    #&& rm -rf /var/lib/apt/lists/*
 
 USER container
 ENV USER=container HOME=/home/container
