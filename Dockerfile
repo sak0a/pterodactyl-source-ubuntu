@@ -46,6 +46,7 @@ RUN apt install -y --no-install-recommends \
 RUN apt install -y --no-install-recommends \
         lib32gcc-s1 libc6-i386 \
         libcurl4:i386 libssl3:i386 \
+        libcurl3-gnutls:i386 \
         lib32z1 lib32stdc++6 \
         libsdl2-2.0-0:i386 \
         lib32tinfo6 libtinfo6:i386 \
